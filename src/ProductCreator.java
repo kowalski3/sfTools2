@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 public class ProductCreator{
 	
 	private Map<String, Map<String, String>> compilationToProductsMap= new HashMap<String, Map<String, String>>();
-	private File productData = new File("productData.csv");
+	private File productData = new File("C:\\Julian\\git\\sfTools2\\data\\productData.csv");
 	
 	File sourceDirectory = new File("C:\\Users\\Julian.SUNFLYKARAOKE\\Desktop\\source");
 	// get all the files from a directory
@@ -123,6 +123,9 @@ public class ProductCreator{
 	}
 	
 	public static void main(String[] args){
-			new ProductCreator().launch(args[0]);
+			
+		for(String next: args){
+			new ProductCreator().launch(next);
+		}
 	}
 }
