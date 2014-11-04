@@ -123,9 +123,9 @@ public class ProductCreator{
 	}
 	
 	public static void main(String[] args){
-			
-		for(String next: args){
+		new ProductCreator().launch("SF345");
+		/*for(String next: args){
 			new ProductCreator().launch(next);
-		}
+		}*/
 	}
 }
