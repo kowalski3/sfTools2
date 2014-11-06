@@ -7,18 +7,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ToolsFileUtil {
 	
-	public static ArrayList<String> singleColToList(File dataFile){
+	public static String[][] csvTo2DArrayList(File dataFile){
 		BufferedReader in = null;
-		ArrayList<String> tempList = new ArrayList<String>();
+		String[][] tempArray = new String[15000][2];
+		
 		try{	
 			in = new BufferedReader(new FileReader(dataFile));
 			String line;
+			int i = 0;
 			
 			while ((line = in.readLine()) != null) {
-				tempList.add(line);
+				String[] tempLine = line.split("\t");
+				tempArray[i][0] = tempLine[0];
+				tempArray[i][1] = tempLine[1].toUpperCase();
+				
+				i++;
+				
 			}
 				
 		} catch (FileNotFoundException ex) {
@@ -27,10 +36,12 @@ public class ToolsFileUtil {
 			ex.printStackTrace();
 		} finally{
 			closeReader(in);
-			return tempList;
+			return tempArray;
 		}
 		
 	}
+	
+	
 	private static void closeReader(Reader reader){
 		try{
 			if(reader != null){
@@ -40,6 +51,7 @@ public class ToolsFileUtil {
 				ex.printStackTrace();
 		}
 	}
-	
+
+
 
 }
