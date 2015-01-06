@@ -2,22 +2,27 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import Utils.FileWriter;
+
 
 public class UniqueToProductMap{
 	
 	private File archiveCsv = new File("C:\\Julian\\git\\sfTools2\\data\\archiveCheck.csv");
-	private Map<String, ArrayList<String>> archiveMap = new HashMap<String, ArrayList<String>>();
-
-	
-	
-	
-
-	private void csvToMap() {
+		
+	/*
+	 * Creates map internally and returns ArrayList, each line contains a key and a set of values.
+	 */
+	private ArrayList<String> csvToArrayList() {
+		
+		Map<String, ArrayList<String>> archiveMap = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> tempList = new ArrayList<String>();
+		
 		BufferedReader in = null;
 		
 		try {
@@ -37,12 +42,31 @@ public class UniqueToProductMap{
 			}
 						
 		} catch (IOException e) {
-			
 			e.printStackTrace();
+		} finally{
+			closeReader(in);
+		}
+		
+		
+		for(Entry<String, ArrayList<String>> entry : archiveMap.entrySet()){
+			//if(entry.getKey() == null ||  entry.getValue() == null)
+			tempList.add(entry.getKey() + entry.getValue());
+		}
+		
+		return tempList;
+		
+	}
+	private void closeReader(Reader reader){
+		try{
+			if(reader != null){
+				reader.close();
+			}
+			} catch(IOException ex){
+				ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	/*
 	 * Main and launch
 	 */
@@ -51,11 +75,6 @@ public class UniqueToProductMap{
 	}
 
 	private void launch() {
-		csvToMap();
-		
-		for(Entry<String, ArrayList<String>> entry : archiveMap.entrySet()){
-			System.out.println(entry);
-		}
-		
+		FileWriter.writeToFile(csvToArrayList()); 			
 	}
 }

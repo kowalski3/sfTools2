@@ -9,6 +9,7 @@ import java.util.Map;
 public class FileWriter{
 	
 	public static void writeToFile(ArrayList<String> listToWrite){
+		System.out.println("hi");
 		File file = new File("output.txt");
 		PrintWriter out = null;
 		
