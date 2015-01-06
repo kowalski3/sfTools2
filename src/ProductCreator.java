@@ -2,10 +2,8 @@
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.io.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 
 public class ProductCreator{
@@ -13,7 +11,7 @@ public class ProductCreator{
 	private Map<String, Map<String, String>> compilationToProductsMap= new HashMap<String, Map<String, String>>();
 	private File productData = new File("C:\\Julian\\git\\sfTools2\\data\\productData.csv");
 	
-	File sourceDirectory = new File("C:\\Users\\Julian.SUNFLYKARAOKE\\Desktop\\source");
+	File sourceDirectory = new File("C:\\Users\\Julian.SUNFLYKARAOKE\\Desktop\\input");
 	// get all the files from a directory
 	File[] fList = sourceDirectory.listFiles();
 	
@@ -59,11 +57,14 @@ public class ProductCreator{
 	//FIND AND COPY FILES
 	public void findAndCopyFiles(String product){
 		Map<String, String> tempMap = compilationToProductsMap.get(product);
-	
+		
 		try{
 			for(Map.Entry<String, String> entry : tempMap.entrySet()){
+				
 				File foundFile = findFile(entry.getKey());
 				//WHY IS ABOVE RETURNING NULL FILES?
+				System.out.println(entry.getKey());
+		
 				if(foundFile != null) copyFile(foundFile, entry.getValue());
 				
 				//System.out.printf("Key : %s and Value: %s %n", entry.getKey(), entry.getValue());
@@ -94,10 +95,12 @@ public class ProductCreator{
 }
 	
 	public void copyFile(File sourceFile, String newFilePrefix) throws IOException {
+		
+
 		String sourceFileName = sourceFile.getName();
 		String targetFileNameNoPrefix = sourceFileName.substring(sourceFileName.indexOf(" "));
 		File destinationFile = new File(targetDirectory + newFilePrefix + targetFileNameNoPrefix);
-
+		
 		try {
 			FileInputStream fileInputStream = new FileInputStream(sourceFile);
 			FileOutputStream fileOutputStream = new FileOutputStream(destinationFile);
@@ -120,10 +123,12 @@ public class ProductCreator{
 		
 		createProductMap();
 		findAndCopyFiles(product);
+		
+			
 	}
 	
 	public static void main(String[] args){
-		new ProductCreator().launch("SF345");
+		new ProductCreator().launch("SFDIGI-027");
 		/*for(String next: args){
 			new ProductCreator().launch(next);
 		}*/

@@ -14,7 +14,7 @@ public class ToolsFileUtil {
 	
 	public static String[][] csvTo2DArrayList(File dataFile){
 		BufferedReader in = null;
-		String[][] tempArray = new String[15000][2];
+		String[][] tempArray = new String[25000][3];
 		
 		try{	
 			in = new BufferedReader(new FileReader(dataFile));
@@ -25,6 +25,7 @@ public class ToolsFileUtil {
 				String[] tempLine = line.split("\t");
 				tempArray[i][0] = tempLine[0];
 				tempArray[i][1] = tempLine[1].toUpperCase();
+				tempArray[i][2] = tempLine[2];
 				
 				i++;
 				

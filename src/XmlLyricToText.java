@@ -93,7 +93,7 @@ public class XmlLyricToText {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		new XmlLyricToText().traverseFolders("C:\\Users\\Julian.SUNFLYKARAOKE\\Desktop\\TEST");
+		new XmlLyricToText().traverseFolders("C:\\Users\\Julian.SUNFLYKARAOKE\\Desktop\\input");
 	}
 }
 
