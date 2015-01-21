@@ -1,3 +1,5 @@
+package dataAnalysis;
+
 //CAUTION NEEDS A LOT OF WORK!
 import java.io.BufferedReader;
 import java.io.File;
