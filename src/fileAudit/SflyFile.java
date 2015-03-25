@@ -59,7 +59,7 @@ public class SflyFile{
 				"| masterWav:| " + masterWav + 
 				"| kbp:| " + kbp +
 				"| mp4:| " + mp4 + 
-				"| mp3g: " + cdg +
+				"| mp3g: | " + cdg +
 				"| unMatched:| " + unMatched +
 				"| unmatchedData:| " + unmatchedData.toString();
 	}
