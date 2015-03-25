@@ -3,6 +3,7 @@ package fileAudit;
 import java.util.ArrayList;
 
 public class SflyFile{
+	String fileName;
 	int bin;
 	int mp3;
 	int xml;
@@ -11,15 +12,20 @@ public class SflyFile{
 	int kbp;
 	int mp4;
 	int unMatched;
+	int cdg; //remove mp3 part of cdg from data as will conflict with xml mp3
 	ArrayList<String> unmatchedData;
 	
 	public SflyFile(String fileName){
 		unmatchedData = new ArrayList<String>();
+		this.fileName = fileName.substring( fileName.indexOf("-"),  //needs some tidying up
+										    fileName.lastIndexOf('.')
+										   );
 		addFile(fileName);
 	}
 	
 	public void addFile(String fileName){
 		
+		//change to switch statement
 		if(fileName.contains(".bin")){
 			bin ++;
 		} else if(fileName.contains(".mp3")){
@@ -32,9 +38,11 @@ public class SflyFile{
 			masterWav ++;
 		} else if (fileName.contains(".MP4")){
 			mp4++;
-		}else if (fileName.contains(".kbp")){
+		} else if (fileName.contains(".kbp")){
 			kbp++;
-		}else{
+		} else if (fileName.contains(".cdg")){
+		    cdg++;
+		} else{
 			unMatched ++;
 			unmatchedData.add(fileName);
 		}
@@ -43,7 +51,8 @@ public class SflyFile{
 	
 	
 	public String getFileData(){
-		return 	"bin:, " + bin + 
+		return 	fileName + ","+
+				"bin:, " + bin + 
 				", mp3:, " + mp3 + 
 				", xml:, " + xml + 
 				", guide Wav:, " + guideWav + 
