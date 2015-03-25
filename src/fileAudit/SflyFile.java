@@ -17,9 +17,7 @@ public class SflyFile{
 	
 	public SflyFile(String fileName){
 		unmatchedData = new ArrayList<String>();
-		this.fileName = fileName.substring( fileName.indexOf("-"),  //needs some tidying up
-										    fileName.lastIndexOf('.')
-										   );
+		this.fileName = fileName;
 		addFile(fileName);
 	}
 	
@@ -49,18 +47,20 @@ public class SflyFile{
 	}
 	
 	
-	
+	/*
+	 * Returns pipe delimited string
+	 */
 	public String getFileData(){
-		return 	fileName + ","+
-				"bin:, " + bin + 
-				", mp3:, " + mp3 + 
-				", xml:, " + xml + 
-				", guide Wav:, " + guideWav + 
-				", masterWav:, " + masterWav + 
-				", kbp:, " + kbp +
-				",  mp4:, " + mp4 + 
-				", unMatched:, " + unMatched +
-				", unmatchedData:, " + unmatchedData.toString();
+		return 	fileName +
+				"| bin: | " + bin + 
+				"| mp3:| " + mp3 + 
+				"| xml:| " + xml + 
+				"| guide Wav:| " + guideWav + 
+				"| masterWav:| " + masterWav + 
+				"| kbp:| " + kbp +
+				"|  mp4:| " + mp4 + 
+				"| unMatched:| " + unMatched +
+				"| unmatchedData:| " + unmatchedData.toString();
 	}
 
 }

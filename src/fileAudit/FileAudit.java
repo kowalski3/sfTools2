@@ -60,14 +60,14 @@ public class FileAudit{
 	
 	
 	public void writeMapToFile(){
-		File file = new File("fileAuditOutput.csv");
+		File file = new File("fileAuditOutput.txt");
 		PrintWriter out = null;
 		
 		try {
 			out = new PrintWriter(file);
 			for (Map.Entry<String, SflyFile> entry : productMap.entrySet()) {
 				SflyFile tempValue = (SflyFile) entry.getValue();
-				out.write(entry.getKey() + ", " +  tempValue.getFileData());
+				out.write(entry.getKey() + "| " +  tempValue.getFileData());
 				out.write(System.getProperty("line.separator"));
 			}
 		} catch (FileNotFoundException ex) {
