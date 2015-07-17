@@ -9,54 +9,57 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
 import Utils.ToolsFileUtil;
 
 
+//compare two maps, note that key (Track) may contain multiple tracks so if there is a match need to iterate collection to see if any writers match
 
-public class FuzzyString {
+public class NonFuzzyMatcher {
 	private static File sourceFile = new File("C:\\Julian\\git\\sfTools2\\data\\srcFuzzyData.txt");
 	private static File archiveFile = new File("C:\\Julian\\git\\sfTools2\\data\\archiveFuzzyData.txt");
 	
-	public ArrayList<MusicTrack> sourceList;
-	public ArrayList<MusicTrack> archiveList;
+	public Map<String, List<MusicTrack>> sourceMap;
+	public Map<String, List<MusicTrack>> archiveMap;
 	
 	public ArrayList<String> resultsList = new ArrayList<String>();
 	private Integer x;
 
 	public int y = 0;
-	public void fuzzyCompareLists() {
-		
-		for(MusicTrack nextSrc: sourceList){
-			System.out.println(y += 1);
-			for(MusicTrack nextArc: archiveList){
-			
-				double difference = getDifference(nextSrc.name, nextArc.name);
-				
-				//System.out.println(difference);
-				if(difference < 0.3){	
-					String [] archiveWriters = nextArc.writers.split("/");
-					
-					for(String nextWriter : archiveWriters){
-						
-						if(nextSrc.writers.contains(nextWriter)){
-							resultsList.add(nextSrc.name + "|" + 
-											nextArc.name + "|" + 
-											nextSrc.id + "|" + 
-											nextArc.id + "|" +
-											nextSrc.writers+ "|" +
-											nextArc.writers
-											);
-							
-						}	
-					}	
-				}	
-			}
-		}
-	}
+//	public void fuzzyCompareLists() {
+//		
+//		for(MusicTrack nextSrc: sourceList){
+//			System.out.println(y += 1);
+//			for(MusicTrack nextArc: archiveList){
+//			
+//				double difference = getDifference(nextSrc.name, nextArc.name);
+//				
+//				//System.out.println(difference);
+//				if(difference < 0.3){	
+//					String [] archiveWriters = nextArc.writers.split("/");
+//					
+//					for(String nextWriter : archiveWriters){
+//						
+//						if(nextSrc.writers.contains(nextWriter)){
+//							resultsList.add(nextSrc.name + "|" + 
+//											nextArc.name + "|" + 
+//											nextSrc.id + "|" + 
+//											nextArc.id + "|" +
+//											nextSrc.writers+ "|" +
+//											nextArc.writers
+//											);
+//							
+//						}	
+//					}	
+//				}	
+//			}
+//		}
+//	}
 				
 	
 	
@@ -67,10 +70,10 @@ public class FuzzyString {
 	
 	
 	
-	public ArrayList<MusicTrack> createTracks(File dataFile){
+	public Map<String, List<MusicTrack>> createTracks(File dataFile){
 		
+		Map<String, List<MusicTrack>> tempMap = new HashMap<String, List<MusicTrack>>();	
 		BufferedReader in = null;
-		ArrayList<MusicTrack> tempTrackList = new ArrayList<MusicTrack>();
 		
 		try{	
 			in = new BufferedReader(new FileReader(dataFile));
@@ -79,7 +82,10 @@ public class FuzzyString {
 			
 			while ((line = in.readLine()) != null) {
 				String[] tempLine = line.split("\t");
-				tempTrackList.add(new MusicTrack(tempLine[0], tempLine[1].toUpperCase(),tempLine[2].toUpperCase()));
+				if(tempMap.get(tempLine[1].toUpperCase()) == null){
+					tempMap.put(tempLine[1].toUpperCase(),new ArrayList<MusicTrack>());
+				}
+				tempMap.get(tempLine[1].toUpperCase()).add(new MusicTrack(tempLine[0], tempLine[1].toUpperCase(),tempLine[2].toUpperCase()));
 			}
 				
 		} catch (FileNotFoundException ex) {
@@ -88,7 +94,7 @@ public class FuzzyString {
 			ex.printStackTrace();
 		} finally{
 			closeReader(in);
-			return tempTrackList;
+			return tempMap;
 		}
 		
 	}
@@ -132,13 +138,13 @@ public class FuzzyString {
 	
 	public void launch(){
 		
-		sourceList = createTracks(sourceFile);
-		archiveList =createTracks(archiveFile);
+//		sourceList = createTracks(sourceFile);
+//		archiveList =createTracks(archiveFile);
 		
 //		System.out.println(sourceList.size());
 //		System.out.println(archiveList.size());
 		
-		fuzzyCompareLists();
+		//fuzzyCompareLists();
 		writeToFile(resultsList);		
 	}
 		
