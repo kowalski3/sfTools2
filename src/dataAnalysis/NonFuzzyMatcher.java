@@ -43,7 +43,7 @@ public class NonFuzzyMatcher {
 					for(MusicTrack nextArchive: value.getValue()){
 						String[] archiveWriters = nextArchive.writers.split("/");
 							for(String nextWriter: archiveWriters){
-								if(nextSrc.writers.contains(nextWriter)){
+								if(nextSrc.writers.contains(nextWriter)|| nextSrc.writers.contains("BLANK")){
 									resultsList.add(nextSrc.toString());
 									//resultsList.add("ARC " + nextArchive.toString());
 								}
