@@ -12,4 +12,9 @@ public class MusicTrack {
 		this.writers = writers;
 	}
 	
+	 @Override 
+	 public String toString(){
+		return id + " , " + name + " ," + writers;
+	}
+	
 }

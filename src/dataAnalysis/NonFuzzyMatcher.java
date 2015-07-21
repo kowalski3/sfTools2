@@ -12,13 +12,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 
-import Utils.ToolsFileUtil;
 
 
-//compare two maps, note that key (Track) may contain multiple tracks so if there is a match need to iterate collection to see if any writers match
+
+//compare two maps, note that key (Track) may contain multiple tracks so if there is a match 
+// need to iterate collection to see if any writers match
 
 public class NonFuzzyMatcher {
 	private static File sourceFile = new File("C:\\Julian\\git\\sfTools2\\data\\srcFuzzyData.txt");
@@ -28,40 +30,29 @@ public class NonFuzzyMatcher {
 	public Map<String, List<MusicTrack>> archiveMap;
 	
 	public ArrayList<String> resultsList = new ArrayList<String>();
-	private Integer x;
 
 	public int y = 0;
-//	public void fuzzyCompareLists() {
-//		
-//		for(MusicTrack nextSrc: sourceList){
-//			System.out.println(y += 1);
-//			for(MusicTrack nextArc: archiveList){
-//			
-//				double difference = getDifference(nextSrc.name, nextArc.name);
-//				
-//				//System.out.println(difference);
-//				if(difference < 0.3){	
-//					String [] archiveWriters = nextArc.writers.split("/");
-//					
-//					for(String nextWriter : archiveWriters){
-//						
-//						if(nextSrc.writers.contains(nextWriter)){
-//							resultsList.add(nextSrc.name + "|" + 
-//											nextArc.name + "|" + 
-//											nextSrc.id + "|" + 
-//											nextArc.id + "|" +
-//											nextSrc.writers+ "|" +
-//											nextArc.writers
-//											);
-//							
-//						}	
-//					}	
-//				}	
-//			}
-//		}
-//	}
-				
 	
+				
+	public void fuzzyCompareLists(){
+		for(Entry<String, List<MusicTrack>> value: archiveMap.entrySet()){	
+			
+			
+			if(sourceMap.get(value.getKey()) != null){
+				for(MusicTrack nextSrc: sourceMap.get(value.getKey())){
+					for(MusicTrack nextArchive: value.getValue()){
+						String[] archiveWriters = nextArchive.writers.split("/");
+							for(String nextWriter: archiveWriters){
+								if(nextSrc.writers.contains(nextWriter)){
+									resultsList.add(nextSrc.toString());
+									//resultsList.add("ARC " + nextArchive.toString());
+								}
+							}
+					}
+				}	
+			}
+		}	
+	}
 	
 	public double getDifference(String src, String arc){
 		double difference = StringUtils.getLevenshteinDistance(src, arc);
@@ -138,20 +129,22 @@ public class NonFuzzyMatcher {
 	
 	public void launch(){
 		
-//		sourceList = createTracks(sourceFile);
-//		archiveList =createTracks(archiveFile);
+		sourceMap = createTracks(sourceFile);
+		archiveMap =createTracks(archiveFile);
 		
-//		System.out.println(sourceList.size());
-//		System.out.println(archiveList.size());
+//		System.out.println(sourceMap.size());
+//		System.out.println(archiveMap.size());
 		
-		//fuzzyCompareLists();
+		
+		
+		fuzzyCompareLists();
 		writeToFile(resultsList);		
 	}
 		
 	
 	
 	public static void main(String args[]){
-		new FuzzyString().launch();
+		new NonFuzzyMatcher().launch();
 	}
 	
 }
