@@ -1,6 +1,9 @@
 package dataAnalysis;
 
-//CAUTION NEEDS A LOT OF WORK!
+/*CAUTION NEEDS A LOT OF WORK.
+* 1. Needs better data validation
+* 2. Needs more testing both on difference method and contains method for writers
+*/
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,53 +12,46 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import Utils.ToolsFileUtil;
 
 
 
-public class FuzzyString {
-	private static File sourceFile = new File("C:\\Julian\\git\\sfTools2\\data\\srcFuzzyData.txt");
-	private static File archiveFile = new File("C:\\Julian\\git\\sfTools2\\data\\archiveFuzzyData.txt");
+public class FuzzyTrackMatch {
+	private static File sourceFile = new File(".\\data\\theirData.txt");
+	private static File archiveFile = new File(".\\data\\ourData.txt");
 	
-	public ArrayList<MusicTrack> sourceList;
-	public ArrayList<MusicTrack> archiveList;
+	public ArrayList<MusicTrack> theirData;
+	public ArrayList<MusicTrack> ourData;
 	
 	public ArrayList<String> resultsList = new ArrayList<String>();
-	private Integer x;
 
 	public int y = 0;
 	public void fuzzyCompareLists() {
-		
-		for(MusicTrack nextSrc: sourceList){
-			System.out.println(y += 1);
-			for(MusicTrack nextArc: archiveList){
+	
+		for(MusicTrack nextTheirs: theirData){
+			for(MusicTrack nextOurs: ourData){
 			
-				double difference = getDifference(nextSrc.name, nextArc.name);
-				
-				//System.out.println(difference);
+				double difference = getDifference(nextTheirs.name, nextOurs.name);
 				if(difference < 0.3){	
-					String [] archiveWriters = nextArc.writers.split("/");
-					
+					String [] archiveWriters = nextOurs.writers.split("/");
 					for(String nextWriter : archiveWriters){
-						
-						if(nextSrc.writers.contains(nextWriter)){
-							resultsList.add(nextSrc.name + "|" + 
-											nextArc.name + "|" + 
-											nextSrc.id + "|" + 
-											nextArc.id + "|" +
-											nextSrc.writers+ "|" +
-											nextArc.writers
+//						
+						if(nextTheirs.writers.contains(nextWriter)){
+							resultsList.add(nextTheirs.id + "|" + 
+											nextTheirs.name + "|" + 
+											nextTheirs.writers+ "|" +
+											nextOurs.id + "|" +
+											nextOurs.name + "|" + 
+											nextOurs.writers
 											);
 							
 						}	
 					}	
-				}	
+				}	//end difference
 			}
-		}
+		} // end outer for
 	}
 				
 	
@@ -67,6 +63,7 @@ public class FuzzyString {
 	
 	
 	
+	//@SuppressWarnings("finally")
 	public ArrayList<MusicTrack> createTracks(File dataFile){
 		
 		BufferedReader in = null;
@@ -105,12 +102,20 @@ public class FuzzyString {
 	}
 	
 	
-	public static void writeToFile(ArrayList<String> listToWrite){
-		File file = new File("output.txt");
+	public void writeToFile(ArrayList<String> listToWrite){
+		File file = new File(".\\data\\output.txt");
 		PrintWriter out = null;
 		
 		try {
 			out = new PrintWriter(file);
+			out.write("Their data number of rows: " + theirData.size());
+			out.write(System.getProperty("line.separator"));
+			out.write("Our data number of rows: " + ourData.size());
+			out.write(System.getProperty("line.separator"));
+			out.write(System.getProperty("line.separator"));
+			out.write("Their id|Their name|Their writers|Our id|Our name|Our writers");
+			out.write(System.getProperty("line.separator"));
+			
 			for(String next : listToWrite){
 				out.write(next);
 				out.write(System.getProperty("line.separator"));
@@ -124,19 +129,12 @@ public class FuzzyString {
 		}
 	}
 	
-	
-	
 		
-	
-	
-	
 	public void launch(){
 		
-		sourceList = createTracks(sourceFile);
-		archiveList =createTracks(archiveFile);
+		theirData = createTracks(sourceFile);
+		ourData =createTracks(archiveFile);
 		
-//		System.out.println(sourceList.size());
-//		System.out.println(archiveList.size());
 		
 		fuzzyCompareLists();
 		writeToFile(resultsList);		
@@ -145,7 +143,7 @@ public class FuzzyString {
 	
 	
 	public static void main(String args[]){
-		new FuzzyString().launch();
+		new FuzzyTrackMatch().launch();
 	}
 	
 }
